@@ -362,9 +362,10 @@
         NSMutableString *layerStr = [NSMutableString string];
         [layerStr appendString:_layer.name];
         
-        NSMutableString *reqStr = [NSMutableString stringWithFormat:@"%@?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=%@&STYLES=&SRS=%@&BBOX=%f,%f,%f,%f&WIDTH=%d&HEIGHT=%d&FORMAT=%@&TRANSPARENT=%@",_baseURL,layerStr,srsStr,tileLL.x,tileLL.y,tileUR.x,tileUR.y,_tileSize,_tileSize,_imageType,(_transparent ? @"true" : @"false")];
-        if (_style)
-            [reqStr appendFormat:@"&STYLES=%@",_style.name];
+        NSString *style = _style ? _style.name : @"Default";
+
+        NSMutableString *reqStr = [NSMutableString stringWithFormat:@"%@?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&LAYERS=%@&STYLES=%@&SRS=%@&BBOX=%f,%f,%f,%f&WIDTH=%d&HEIGHT=%d&FORMAT=%@&TRANSPARENT=%@",_baseURL,layerStr,style,srsStr,tileLL.x,tileLL.y,tileUR.x,tileUR.y,_tileSize,_tileSize,_imageType,(_transparent ? @"true" : @"false")];
+
         NSString *fullReqStr = [reqStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         NSURLRequest *urlReq = [NSURLRequest requestWithURL:[NSURL URLWithString:fullReqStr]];
         
